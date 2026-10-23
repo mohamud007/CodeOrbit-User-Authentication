@@ -29,6 +29,7 @@ Install the following before running the project:
 - Node.js and npm
 - MySQL Server
 - Git
+Screenshot 2026-10-23 184209.png
 
 ## Setup Instructions
 
