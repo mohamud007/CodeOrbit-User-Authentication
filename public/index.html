@@ -82,6 +82,36 @@
             font-size: 15px;
         }
 
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 48px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.toggle-password:hover {
+    background: transparent;
+}
+
+
         .primary {
             width: 100%;
             margin-top: 20px;
@@ -105,17 +135,56 @@
             overflow-wrap: anywhere;
         }
 
-        .profile {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            overflow-wrap: anywhere;
-        }
+       
+/* Profile dashboard heading */
+#dashboard h2 {
+    margin: 24px 0 18px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
 
-        .profile p {
-            line-height: 1.5;
-        }
+/* Profile information card */
+.profile {
+    margin-top: 16px;
+    padding: 22px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* Profile information spacing */
+.profile p {
+    margin: 0 0 16px;
+    line-height: 1.6;
+    font-size: 15px;
+    color: #334155;
+}
+
+.profile p:last-child {
+    margin-bottom: 0;
+}
+
+/* Dashboard buttons */
+#dashboard button {
+    min-height: 46px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#dashboard .primary:hover {
+    background: #1d4ed8;
+}
+
+#dashboard .secondary:hover {
+    background: #cbd5e1;
+}
+
+#dashboard button:active {
+    transform: scale(0.99);
+}
+
     </style>
 </head>
 
@@ -155,15 +224,29 @@
                 required
             >
 
-            <label for="password">Password</label>
-            <input
-                id="password"
-                name="password"
-                type="password"
-                minlength="12"
-                autocomplete="current-password"
-                required
-            >
+            
+<label for="password">Password</label>
+<div class="password-wrapper">
+    <input
+        id="password"
+        name="password"
+        type="password"
+        minlength="12"
+        autocomplete="current-password"
+        required
+    >
+
+    <button
+        type="button"
+        id="togglePassword"
+        class="toggle-password"
+        aria-label="Show password"
+        aria-pressed="false"
+    >
+        👁
+    </button>
+</div>
+
 
             <button class="primary" id="submitButton" type="submit">
                 Create Account
@@ -199,6 +282,27 @@
         const nameInput = document.getElementById("name");
         const emailInput = document.getElementById("email");
         const passwordInput = document.getElementById("password");
+
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+    const isPasswordHidden = passwordInput.type === "password";
+
+    passwordInput.type = isPasswordHidden ? "text" : "password";
+
+    togglePassword.textContent = isPasswordHidden ? "👁" : "👁";
+
+    togglePassword.setAttribute(
+        "aria-label",
+        isPasswordHidden ? "Hide password" : "Show password"
+    );
+
+    togglePassword.setAttribute(
+        "aria-pressed",
+        String(isPasswordHidden)
+    );
+});
+
         const signupTab = document.getElementById("signupTab");
         const loginTab = document.getElementById("loginTab");
         const submitButton = document.getElementById("submitButton");
@@ -300,47 +404,62 @@
         });
 
         async function loadProfile() {
-            try {
-                const response = await fetch("/api/auth/profile", {
-                    credentials: "same-origin"
-                });
+    try {
+        const response = await fetch("/api/auth/profile", {
+            credentials: "same-origin"
+        });
 
-                const data = await response.json();
+        const data = await response.json();
 
-                if (!response.ok) {
-                    showMessage(data.message || "Could not load profile");
-                    return;
-                }
-
-                const user = data.user;
-
-                profileData.replaceChildren();
-
-                const heading = document.createElement("p");
-                heading.textContent = "Profile details";
-
-                const name = document.createElement("p");
-                name.textContent = `Name: ${user.name}`;
-
-                const email = document.createElement("p");
-                email.textContent = `Email: ${user.email}`;
-
-                const id = document.createElement("p");
-                id.textContent = `User ID: ${user.id}`;
-
-                profileData.append(heading, name, email, id);
-
-                if (user.created_at) {
-                    const created = document.createElement("p");
-                    created.textContent =
-                        `Account created: ${new Date(user.created_at).toLocaleString()}`;
-                    profileData.append(created);
-                }
-            } catch (error) {
-                showMessage("Could not load profile. Try again.");
-            }
+        if (!response.ok) {
+            showMessage(data.message || "Could not load profile");
+            return;
         }
 
+        const user = data.user;
+
+        profileData.replaceChildren();
+
+        const heading = document.createElement("p");
+        heading.textContent = "Profile details";
+        profileData.append(heading);
+
+        function addProfileField(label, value) {
+            const row = document.createElement("p");
+
+            const labelElement = document.createElement("strong");
+            labelElement.textContent = `${label}: `;
+
+            const valueElement = document.createElement("span");
+            valueElement.textContent = value ?? "";
+
+            row.append(labelElement, valueElement);
+            return row;
+        }
+
+        profileData.append(
+            addProfileField("Name", user.name),
+            addProfileField("Email", user.email),
+            addProfileField("User ID", user.id)
+        );
+
+        if (user.created_at) {
+            const created = document.createElement("p");
+
+            const createdLabel = document.createElement("strong");
+            createdLabel.textContent = "Account Created: ";
+
+            const createdValue = document.createElement("span");
+            createdValue.textContent =
+                new Date(user.created_at).toLocaleString();
+
+            created.append(createdLabel, createdValue);
+            profileData.append(created);
+        }
+    } catch (error) {
+        showMessage("Could not load profile. Try again.");
+    }
+}
         document.getElementById("profileButton")
             .addEventListener("click", loadProfile);
 
