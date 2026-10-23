@@ -113,7 +113,3 @@ The tests verify signup, login, profile access, and logout behavior.
 ## GitHub Repository
 
 [CodeOrbit – User Authentication System](https://github.com/mohamud007/CodeOrbit-User-Authentication)
-
-## Author
-
-Developed as a backend authentication project to practice REST APIs, database integration, password security, session management, and automated testing.
