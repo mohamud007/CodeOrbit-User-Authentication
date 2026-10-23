@@ -29,7 +29,11 @@ Install the following before running the project:
 - Node.js and npm
 - MySQL Server
 - Git
-Screenshot 2026-10-23 184209.png
+
+##Screenshots
+** Sigh Up Page **
+[Sighn Up Page](https://github.com/mohamud007/CodeOrbit-User-Authentication/blob/main/Screenshot%202026-10-23%20184209.png)
+
 
 ## Setup Instructions
 
