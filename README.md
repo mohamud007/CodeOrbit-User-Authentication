@@ -31,9 +31,17 @@ Install the following before running the project:
 - Git
 
 ## Screenshots
-** Sigh Up Page **
+**Sign Up Page**
+
 ![Sighn Up Page](https://github.com/mohamud007/CodeOrbit-User-Authentication/blob/main/Screenshot%202026-10-23%20184209.png)
 
+**Log In Page**
+
+![Log In Page](https://github.com/mohamud007/CodeOrbit-User-Authentication/blob/main/Screenshot%202026-10-23%20184234.png)
+
+**Profile Page**
+
+![Profile Page](https://github.com/mohamud007/CodeOrbit-User-Authentication/blob/main/Screenshot%202026-10-23%20184246.png)
 
 ## Setup Instructions
 
