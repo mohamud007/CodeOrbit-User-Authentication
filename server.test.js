@@ -107,5 +107,19 @@ describe("User Authentication API", () => {
     });
 });
 afterAll(async () => {
+    const sessionStore = app.locals.sessionStore;
+
+    if (sessionStore) {
+        await new Promise((resolve, reject) => {
+            sessionStore.close((error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
     await pool.end();
 });

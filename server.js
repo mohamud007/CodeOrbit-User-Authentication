@@ -20,6 +20,7 @@ const sessionStore = new MySQLStore(
     },
     pool
 );
+app.locals.sessionStore = sessionStore;
 
 // Configure authentication sessions
 app.use(
